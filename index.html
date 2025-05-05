@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMI Calculator</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            background-color: #FDECEF;
+        }
+        .calculator {
+            background-color: #9D6381;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        input, button {
+            padding: 8px;
+            margin: 5px 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #65334D;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #65334D;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        details {
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .underweight { color: #FF220C; }
+        .normal { color: #71B340; }
+        .overweight { color: #FB5607; }
+        .obese { color: #FF220C; }
+    </style>
+</head>
+<body>
+    <h1>Hi!! Lets calculate your height, and weight using a BMI calculator!!</h1>
+    
+    <details ontoggle="toggleInstructions()">
+        <summary>Show/Hide Instructions</summary>
+        <div id="instructions">
+            <p>Body Mass Index (BMI) is a simple calculation using a person's height and weight. The formula is:</p>
+            <p><strong>BMI = weight(kg) / (height(m) × height(m))</strong></p>
+            <p>Enter your weight in kilograms and height in centimeters below to calculate your BMI (use numbers only).</p>
+            
+            <h3>BMI Categories:</h3>
+            <table>
+                <tr>
+                    <th>Category</th>
+                    <th>BMI Range</th>
+                </tr>
+                <tr>
+                    <td>Underweight</td>
+                    <td>&lt; 18.5</td>
+                </tr>
+                <tr>
+                    <td>Normal weight</td>
+                    <td>≥ 18.5 and ≤ 24.9</td>
+                </tr>
+                <tr>
+                    <td>Overweight</td>
+                    <td>≥ 25 and ≤ 29.9</td>
+                </tr>
+                <tr>
+                    <td>Obese</td>
+                    <td>≥ 30</td>
+                </tr>
+            </table>
+            
+        </div>
+    </details>
+    
+    <div class="calculator">
+        <label for="weight">Weight (kg):</label>
+        <input type="number" id="weight" step="0.1" min="20" max="300">
+        
+        <label for="height">Height (cm):</label>
+        <input type="number" id="height" step="0.1" min="100" max="250">
+        
+        <button onclick="calculateBMI()">Calculate BMI</button>
+        
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function toggleInstructions() {
+          
+            console.log("Instructions toggled");
+        }
+        
+        function calculateBMI() {
+            const weight = parseFloat(document.getElementById('weight').value);
+            const heightCm = parseFloat(document.getElementById('height').value);
+            
+            if (isNaN(weight) || isNaN(heightCm)) {
+                alert("Please enter valid weight and height");
+                return;
+            }
+            
+            if (weight <= 0 || heightCm <= 0) {
+                alert("Weight and height must be positive values");
+                return;
+            }
+            
+            
+            const heightM = heightCm / 100;
+            
+          
+            const bmi = weight / (heightM * heightM);
+            
+           
+            let category, colorClass;
+            if (bmi < 18.5) {
+                category = "Underweight";
+                colorClass = "underweight";
+            } else if (bmi >= 18.5 && bmi <= 24.9) {
+                category = "Normal weight";
+                colorClass = "normal";
+            } else if (bmi >= 25 && bmi <= 29.9) {
+                category = "Overweight";
+                colorClass = "overweight";
+            } else {
+                category = "Obese";
+                colorClass = "obese";
+            }
+            
+          
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = `
+                <p>Your BMI: <strong>${bmi.toFixed(1)}</strong></p>
+                <p class="${colorClass}">Category: <strong>${category}</strong></p>
+            `;
+            resultDiv.style.display = "block";
+        }
+    </script>
+</body>
+</html>
